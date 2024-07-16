@@ -1,14 +1,14 @@
 package hoon.lib.hoon_recyclerview;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+
+import hoon.lib.hoon_recyclerview.databinding.ItemMainBinding;
 
 public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapter.MainViewHolder> {
 
@@ -21,12 +21,14 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MainViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false));
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        ItemMainBinding binding = ItemMainBinding.inflate(layoutInflater, parent, false);
+        return new MainViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-        holder.tvTitle.setText(items.get(position));
+        holder.onBind(items.get(position));
     }
 
     @Override
@@ -35,11 +37,15 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvTitle;
+        ItemMainBinding itemMainBinding;
 
-        public MainViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvTitle = itemView.findViewById(R.id.tv_title);
+        public MainViewHolder(ItemMainBinding itemMainBinding) {
+            super(itemMainBinding.getRoot());
+            this.itemMainBinding = itemMainBinding;
+        }
+
+        public void onBind(String item) {
+            itemMainBinding.tvTitle.setText(item);
         }
     }
 }
