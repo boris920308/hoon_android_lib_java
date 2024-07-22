@@ -21,6 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".HoonService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="hoon.example.hoon_aidl.IHoonService"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
