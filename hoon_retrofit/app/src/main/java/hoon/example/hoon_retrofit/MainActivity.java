@@ -30,24 +30,27 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = retrofit.create(ApiService.class);
-        Call<User> call = apiService.getUser(1);
 
-        binding.btnGet.setOnClickListener(view -> call.enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call1, Response<User> response) {
-                        if (response.isSuccessful()) {
-                            User user = response.body();
-                            binding.tvData.setText("onResponse, response.isSuccessful(), user = " + user.getUserName());
-                        } else {
-                            binding.tvData.setText("onResponse, response.isSuccessful(), request fail");
+        binding.btnGet.setOnClickListener(view -> {
+                    binding.tvData.setText("click btn, loading...");
+                    Call<User> call = apiService.getUser(1);
+                    call.enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call1, Response<User> response) {
+                            if (response.isSuccessful()) {
+                                User user = response.body();
+                                binding.tvData.setText("onResponse, response.isSuccessful(), user = " + user.getUserName());
+                            } else {
+                                binding.tvData.setText("onResponse, response.isSuccessful(), request fail");
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<User> call1, Throwable t) {
-                        binding.tvData.setText("onFailure");
-                    }
-                })
+                        @Override
+                        public void onFailure(Call<User> call1, Throwable t) {
+                            binding.tvData.setText("onFailure");
+                        }
+                    });
+                }
         );
     }
 
