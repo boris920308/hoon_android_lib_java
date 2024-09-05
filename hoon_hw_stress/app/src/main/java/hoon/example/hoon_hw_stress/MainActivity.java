@@ -1,5 +1,6 @@
 package hoon.example.hoon_hw_stress;
 
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -12,9 +13,7 @@ import hoon.example.hoon_hw_stress.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    private boolean isTesting = false;
-    private Handler handler = new Handler();
-    private Runnable stressTestRunnable;
+    private HoonGLRenderer hoonGLRenderer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,42 +22,32 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.btnAddCpuStress.setOnClickListener(view -> {
-            startStressTest();
+        hoonGLRenderer = new HoonGLRenderer(getApplicationContext());
+        binding.glSurfaceView.setEGLContextClientVersion(2);
+        binding.glSurfaceView.setRenderer(hoonGLRenderer);
+        binding.glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+
+
+        binding.btnStart.setOnClickListener(view -> {
+            hoonGLRenderer.startLoad();
+            binding.glSurfaceView.requestRender();
         });
 
-        binding.btnInitCpuStress.setOnClickListener(view -> {
-            stopStressTest();
+        binding.btnStop.setOnClickListener(view -> {
+            hoonGLRenderer.stopLoad();
+            binding.glSurfaceView.requestRender();
         });
-
     }
 
-    private void startStressTest() {
-        Toast.makeText(this, "start Stress Test", Toast.LENGTH_SHORT).show();
-        isTesting = true;
-
-        stressTestRunnable = new Runnable() {
-            @Override
-            public void run() {
-                // CPU를 집중적으로 사용하게 하는 작업 수행
-                for (int i = 0; i < 100000; i++) {
-                    double result = Math.sqrt(Math.random()) * Math.sin(Math.random());
-                    Log.d("CPUStressTest", "Result: " + result);
-                }
-                // 작업이 끝나면 다시 실행
-                if (isTesting) {
-                    handler.post(this);
-                }
-            }
-        };
-
-        // 첫 번째 실행
-        handler.post(stressTestRunnable);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        binding.glSurfaceView.onPause();
     }
 
-    private void stopStressTest() {
-        Toast.makeText(this, "Stop Stress Test", Toast.LENGTH_SHORT).show();
-        isTesting = false;
-        handler.removeCallbacks(stressTestRunnable);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        binding.glSurfaceView.onResume();
     }
 }

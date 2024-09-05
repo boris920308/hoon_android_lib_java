@@ -10,28 +10,22 @@
     android:padding="8dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tv_status"
+    <android.opengl.GLSurfaceView
+        android:id="@+id/gl_surface_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=" status . . . "/>
+        android:layout_height="200dp" />
+
 
     <Button
-        android:id="@+id/btn_add_cpu_stress"
+        android:id="@+id/btn_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="add stress" />
+        android:text="start" />
 
     <Button
-        android:id="@+id/btn_remove_cpu_stress"
+        android:id="@+id/btn_stop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="remove stress" />
-
-    <Button
-        android:id="@+id/btn_init_cpu_stress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="init stress" />
+        android:text="stop" />
 
 </LinearLayout>
