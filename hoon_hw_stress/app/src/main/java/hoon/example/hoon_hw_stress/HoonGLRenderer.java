@@ -17,9 +17,15 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class HoonGLRenderer implements GLSurfaceView.Renderer {
 
-    private int program;
-    private int uResolutionLocation;
-    private Context mContext;
+
+    private int shaderProgram;
+    private int positionHandle;
+    private final Context mContext;
+
+    private FloatBuffer vertexBuffer;
+    private static final int vertexCount = 3000; // Example: 3000 vertices
+    private static final int COORDS_PER_VERTEX = 3;
+    private static final float[] vertexData = new float[vertexCount * COORDS_PER_VERTEX]; // Initialize with vertex data
 
     public HoonGLRenderer(Context mContext) {
         this.mContext = mContext;
@@ -34,24 +40,31 @@ public class HoonGLRenderer implements GLSurfaceView.Renderer {
         int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
         int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
 
-        // 셰이더 프로그램 생성 및 링크
-        program = GLES20.glCreateProgram();
-        GLES20.glAttachShader(program, vertexShader);
-        GLES20.glAttachShader(program, fragmentShader);
-        GLES20.glLinkProgram(program);
+        shaderProgram = GLES20.glCreateProgram();
+        GLES20.glAttachShader(shaderProgram, vertexShader);
+        GLES20.glAttachShader(shaderProgram, fragmentShader);
+        GLES20.glLinkProgram(shaderProgram);
 
-        // uResolution 유니폼의 위치를 가져옴
-        uResolutionLocation = GLES20.glGetUniformLocation(program, "uResolution");
+        // Initialize vertex buffer
+        ByteBuffer bb = ByteBuffer.allocateDirect(vertexData.length * 4);
+        bb.order(ByteOrder.nativeOrder());
+        vertexBuffer = bb.asFloatBuffer();
+        vertexBuffer.put(vertexData);
+        vertexBuffer.position(0);
+
+        GLES20.glUseProgram(shaderProgram);
+        positionHandle = GLES20.glGetAttribLocation(shaderProgram, "vPosition");
     }
 
     @Override
     public void onDrawFrame(GL10 unused) {
-        // 화면을 지우고 셰이더 프로그램을 적용
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-        GLES20.glUseProgram(program);
-
-        // 화면 크기를 셰이더로 전달
-//        GLES20.glUniform2f(uResolutionLocation, (float)width, (float)height);
+        GLES20.glUseProgram(shaderProgram);
+        vertexBuffer.position(0);
+        GLES20.glVertexAttribPointer(positionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, COORDS_PER_VERTEX * 4, vertexBuffer);
+        GLES20.glEnableVertexAttribArray(positionHandle);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount / COORDS_PER_VERTEX);
+        GLES20.glDisableVertexAttribArray(positionHandle);
 
         // 렌더링 코드 (블러 처리 등 후처리 적용)
         renderQuad();
@@ -86,24 +99,24 @@ public class HoonGLRenderer implements GLSurfaceView.Renderer {
     }
 
     private void renderQuad() {
-        // 간단한 사각형을 화면에 그려서 셰이더 적용
-        float[] vertices = {
-                -1.0f, 1.0f,
-                -1.0f, -1.0f,
-                1.0f, 1.0f,
-                1.0f, -1.0f
-        };
+        // For example, create a lot of triangles
+        for (int i = 0; i < vertexCount; i += 9) {
+            // Define a triangle
+            vertexData[i] = (float) Math.random() * 2 - 1;
+            vertexData[i + 1] = (float) Math.random() * 2 - 1;
+            vertexData[i + 2] = 0;
 
-        FloatBuffer vertexBuffer = ByteBuffer.allocateDirect(vertices.length * 4)
-                .order(ByteOrder.nativeOrder()).asFloatBuffer();
-        vertexBuffer.put(vertices).position(0);
+            vertexData[i + 3] = (float) Math.random() * 2 - 1;
+            vertexData[i + 4] = (float) Math.random() * 2 - 1;
+            vertexData[i + 5] = 0;
 
-        int positionHandle = GLES20.glGetAttribLocation(program, "vPosition");
-        GLES20.glEnableVertexAttribArray(positionHandle);
-        GLES20.glVertexAttribPointer(positionHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+            vertexData[i + 6] = (float) Math.random() * 2 - 1;
+            vertexData[i + 7] = (float) Math.random() * 2 - 1;
+            vertexData[i + 8] = 0;
+        }
 
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
-
-        GLES20.glDisableVertexAttribArray(positionHandle);
+        // Update vertex buffer
+        vertexBuffer.put(vertexData);
+        vertexBuffer.position(0);
     }
 }
