@@ -11,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -89,6 +91,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         binding.glSurfaceView.onResume();
+    }
+
+    private void runHwInfo() {
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    getCpuTemperature();
+                    getCpuUsage();
+                    getGpuUsage();
+                } catch (Exception e) {
+                    Log.e("Hoon92", "err = " + e);
+                }
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 100, 1000);
+
     }
 
     private void getCpuTemperature() throws IOException {
