@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         binding.btnApple.setOnClickListener(view -> {
-            viewModel.setApple();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(binding.containerFrag.getId(), AppleFragment.class, null)
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.btnBanana.setOnClickListener(view -> {
-            viewModel.setBanana();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(binding.containerFrag.getId(), BananaFragment.class, null)
@@ -45,11 +43,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.btnCherry.setOnClickListener(view -> {
-            viewModel.setCherry();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(binding.containerFragCherry.getId(), CherryFragment.class, null)
                     .commit();
+        });
+
+        binding.btnSetApple.setOnClickListener(view -> {
+            viewModel.setApple();
+        });
+
+        binding.btnSetBanana.setOnClickListener(view -> {
+            viewModel.setBanana();
+        });
+
+        binding.btnSetCherry.setOnClickListener(view -> {
+            viewModel.setCherry();
         });
 
         viewModel = new ViewModelProvider(this).get(SharedViewModel.class);

@@ -37,12 +37,44 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layout_vm_btn_group"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/layout_btn_group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/btn_set_apple"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="set a"/>
+
+        <Button
+            android:id="@+id/btn_set_banana"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="set b"/>
+
+        <Button
+            android:id="@+id/btn_set_cherry"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="set c"/>
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tv_vm_value"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/layout_btn_group"
+        app:layout_constraintTop_toBottomOf="@id/layout_vm_btn_group"
         app:layout_constraintStart_toStartOf="@id/layout_btn_group"
         app:layout_constraintEnd_toEndOf="@id/layout_btn_group"
         android:text="hello shared value"/>
