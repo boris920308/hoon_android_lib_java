@@ -20,5 +20,26 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        binding.btnApple.setOnClickListener(view -> {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(binding.containerFrag.getId(), AppleFragment.class, null)
+                    .commit();
+        });
+
+        binding.btnBanana.setOnClickListener(view -> {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(binding.containerFrag.getId(), BananaFragment.class, null)
+                    .commit();
+        });
+
+        binding.btnCherry.setOnClickListener(view -> {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(binding.containerFrag.getId(), CherryFragment.class, null)
+                    .commit();
+        });
     }
 }
