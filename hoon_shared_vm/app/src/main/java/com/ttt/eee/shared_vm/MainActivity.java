@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             viewModel.setCherry();
         });
 
-        viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+        viewModel = new ViewModelProvider(this, SharedViewModel.factory()).get(SharedViewModel.class);
 
         viewModel.sharedValue.observe(this, s -> {
             binding.tvVmValue.setText(s);

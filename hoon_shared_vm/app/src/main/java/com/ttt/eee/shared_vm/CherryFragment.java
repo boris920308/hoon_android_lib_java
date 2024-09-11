@@ -28,7 +28,7 @@ public class CherryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity(), SharedViewModel.factory()).get(SharedViewModel.class);
 
         viewModel.sharedValue.observe(requireActivity(), s -> {
             binding.tvVmValue.setText(s);
