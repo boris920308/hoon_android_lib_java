@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/layout_btn_group"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="40dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,11 +37,30 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_vm_value"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/layout_btn_group"
+        app:layout_constraintStart_toStartOf="@id/layout_btn_group"
+        app:layout_constraintEnd_toEndOf="@id/layout_btn_group"
+        android:text="hello shared value"/>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_frag"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/layout_btn_group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/container_frag_cherry"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/container_frag_cherry"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/container_frag"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

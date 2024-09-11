@@ -1,18 +1,21 @@
 package com.ttt.eee.shared_vm;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.ttt.eee.shared_vm.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
+    SharedViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +24,12 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        init();
+    }
+
+    private void init() {
         binding.btnApple.setOnClickListener(view -> {
+            viewModel.setApple();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(binding.containerFrag.getId(), AppleFragment.class, null)
@@ -29,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.btnBanana.setOnClickListener(view -> {
+            viewModel.setBanana();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(binding.containerFrag.getId(), BananaFragment.class, null)
@@ -36,10 +45,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.btnCherry.setOnClickListener(view -> {
+            viewModel.setCherry();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(binding.containerFrag.getId(), CherryFragment.class, null)
+                    .replace(binding.containerFragCherry.getId(), CherryFragment.class, null)
                     .commit();
         });
+
+        viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+
+        viewModel.sharedValue.observe(this, s -> {
+            binding.tvVmValue.setText(s);
+        });
+
     }
 }
